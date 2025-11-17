@@ -8,7 +8,7 @@
 240411100013 Brian Baharatisy Ismail
 
 
-240411100029 Aisya Salsabilah
+240411100029 Aisyah Salsabilah
 
 
 240411100049 Sucipto Budiono
