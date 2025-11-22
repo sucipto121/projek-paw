@@ -1,0 +1,185 @@
+[
+    {
+        "table": "1",
+        "items": [
+            {
+                "title": "Jasmine Sweet Pancake",
+                "price": 25.6,
+                "qty": 1
+            },
+            {
+                "title": "Green Salad Bowl",
+                "price": 18,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-19T11:04:51.477Z"
+    },
+    {
+        "table": "10",
+        "customer": "budi",
+        "items": [
+            {
+                "title": "Fresh Coconut",
+                "price": 10000,
+                "qty": 2
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T08:55:49.524Z",
+        "order_code": "ORD58280C"
+    },
+    {
+        "table": "10",
+        "customer": "budi",
+        "items": [
+            {
+                "title": "Fresh Coconut",
+                "price": 10000,
+                "qty": 2
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:19:14.713Z",
+        "order_code": "ORD2B26E9"
+    },
+    {
+        "table": "10",
+        "customer": "budi",
+        "items": [
+            {
+                "title": "Milkshake Vanilla",
+                "price": 12000,
+                "qty": 1
+            },
+            {
+                "title": "Iced Lemon Tea",
+                "price": 6000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:19:25.984Z",
+        "order_code": "ORDE00EA7"
+    },
+    {
+        "table": "5",
+        "customer": "rudy",
+        "items": [
+            {
+                "title": "Fresh Coconut",
+                "price": 10000,
+                "qty": 1
+            },
+            {
+                "title": "Seafood Pasta",
+                "price": 25000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:23:57.209Z",
+        "order_code": "ORDD370A9"
+    },
+    {
+        "table": "12",
+        "customer": "haya",
+        "items": [
+            {
+                "title": "Iced Lemon Tea",
+                "price": 6000,
+                "qty": 1
+            },
+            {
+                "title": "Seafood Pasta",
+                "price": 25000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:27:09.161Z",
+        "order_code": "ORDD2AD50",
+        "order_id": "692181ed2ad87"
+    },
+    {
+        "table": "12",
+        "customer": "rudy",
+        "items": [
+            {
+                "title": "Milkshake Vanilla",
+                "price": 12000,
+                "qty": 1
+            },
+            {
+                "title": "Iced Lemon Tea",
+                "price": 6000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:27:43.002Z",
+        "order_code": "ORDF03E70",
+        "order_id": "6921820f03e80"
+    },
+    {
+        "table": "15",
+        "customer": "samuel",
+        "items": [
+            {
+                "title": "Fresh Coconut",
+                "price": 10000,
+                "qty": 1
+            },
+            {
+                "title": "Milkshake Vanilla",
+                "price": 12000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:34:13.559Z",
+        "order_code": "ORD58C7AB",
+        "order_id": "692183958c7bf"
+    },
+    {
+        "table": "13",
+        "customer": "rudy",
+        "items": [
+            {
+                "title": "Iced Lemon Tea",
+                "price": 6000,
+                "qty": 1
+            },
+            {
+                "title": "Seafood Pasta",
+                "price": 25000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:34:37.974Z",
+        "order_code": "ORDDF1D85",
+        "order_id": "692183adf1d90"
+    },
+    {
+        "table": "1",
+        "customer": "assa",
+        "items": [
+            {
+                "title": "Grilled Lobster",
+                "price": 60000,
+                "qty": 1
+            },
+            {
+                "title": "Spicy Seafood Pasta",
+                "price": 22500,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T09:38:47.528Z",
+        "order_code": "ORD784CC3",
+        "order_id": "692184a784cd6"
+    }
+]
