@@ -7,7 +7,7 @@ if (!isset($_SESSION['nama'])) {
 
 $jenis = $_GET['jenis'];
 
-// DATA MENU (bisa diganti sesuai kebutuhan)
+
 $data = [
     'makanan' => [
         ['nama' => 'Nasi Goreng', 'harga' => 15000],
@@ -26,7 +26,7 @@ $data = [
     ]
 ];
 
-// Tambah ke keranjang
+
 if (isset($_GET['add'])) {
     $id = $_GET['add'];
     $_SESSION['keranjang'][] = $data[$jenis][$id];
