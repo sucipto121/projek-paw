@@ -1,0 +1,283 @@
+/* ========== Base & Layout ========== */
+:root {
+    --primary: #0b74de;
+    --secondary: #20b1ff;
+    --text: #1f2a37;
+    --muted: #6c7a89;
+    --card: #ffffff;
+    --bg: #f3f6fb;
+    --border: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    background: var(--bg);
+    color: var(--text);
+    height: 100%;
+}
+
+/* ========== Topbar ========== */
+/* ======== Topbar Menu Buttons ======== */
+.top-menu {
+    display: flex;
+    align-items: center;
+    gap: 14px; /* jarak antar tombol */
+}
+
+.top-menu a {
+    padding: 8px 14px;
+    background: #e9f1ff;    /* warna kotak */
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    transition: 0.2s;
+}
+
+.top-menu a:hover {
+    background: #d7e8ff;
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.topbar {
+    background: var(--card);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.topbar .logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbar h1 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.topbar .user {
+    display: flex;
+    align-items: center;
+}
+
+.topbar .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* ========== Sidebar ========== */
+.layout {
+    display: flex;
+    min-height: calc(100vh - 64px);
+}
+
+.sidebar {
+    width: 230px;
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+}
+
+.sidebar .menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar a {
+    padding: 12px 20px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+    border-left: 3px solid transparent;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background: #f0f7ff;
+    border-left-color: var(--primary);
+}
+
+.sidebar a.active {
+    background: #eaf3ff;
+    border-left-color: var(--primary);
+    font-weight: 600;
+}
+
+/* ========== Main Content ========== */
+.main {
+    flex: 1;
+    padding: 26px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.welcome h2 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* ========== Buttons ========== */
+.btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.btn.primary {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    color: white;
+}
+
+.btn.primary:hover {
+    opacity: 0.92;
+}
+
+.btn.ghost {
+    background: #e7eef7;
+    color: var(--text);
+}
+
+.btn.ghost:hover {
+    background: #d8e3f2;
+}
+
+/* ========== Cards ========== */
+.card {
+    background: var(--card);
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.card h3 {
+    font-size: 17px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.card p, .card ul {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+/* ========== Tables ========== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+th {
+    background: #f7faff;
+    padding: 10px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+}
+
+td {
+    padding: 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #eef2f6;
+}
+
+tr:hover td {
+    background: #f9fcff;
+}
+
+tfoot td {
+    font-weight: 700;
+    background: #f7faff;
+}
+
+/* ========== Forms ========== */
+input[type=date] {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+input[type=date]:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(11,116,222,0.18);
+    outline: none;
+}
+
+/* ========== Print Optimization ========== */
+@media print {
+    .sidebar, .topbar, .welcome div, .btn {
+        display: none !important;
+    }
+    .main {
+        margin: 0;
+        padding: 0;
+    }
+    .card {
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+
