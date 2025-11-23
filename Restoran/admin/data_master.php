@@ -57,7 +57,7 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 <body>
   <header class="topbar"><div class="brand"><div class="logo">R</div><h1>Data Master</h1></div><div class="user"><div class="avatar"><?= strtoupper(substr($_SESSION['user']['nama'],0,1)) ?></div></div></header>
   <div class="layout">
-    <aside class="sidebar"><div class="menu"><a href="index.php">Home</a><a class="active" href="data_master.php">Data Master</a></div></aside>
+    <aside class="sidebar"><div class="menu"><a href="index.php">Home</a><a class="active" href="data_master.php">Data Master</a><a href="transaksi.php">Transaksi</a><a href="laporan.php">Laporan</a></div></aside>
     <main class="main">
       <div class="card">
         <h3>Tambah Kategori</h3>
