@@ -122,6 +122,9 @@ if (!empty($orderIds)) {
         .items-list div { margin-bottom: 4px; }
         .small-muted { font-size:12px; color:#666; }
         .no-orders { padding:16px; text-align:center; color:#666; }
+        .col-id { width:50px; text-align:center; }
+        .col-center { text-align:center; }
+        .col-right { text-align:right; }
     </style>
 </head>
 <body>
@@ -147,7 +150,7 @@ if (!empty($orderIds)) {
 
     <main class="main">
         <div class="card">
-            <h3>Daftar Pesanan (dari database)</h3>
+            <h3>Daftar Pesanan</h3>
 
             <?php if (empty($orders)): ?>
                 <div class="no-orders">Belum ada pesanan.</div>
@@ -156,13 +159,13 @@ if (!empty($orderIds)) {
             <table>
                 <thead>
                 <tr>
-                    <th style="width:40px">No</th>
-                    <th style="width:70px">ID</th>
+                    <th class="col-id">No</th>
+                    <th class="col-id">ID</th>
                     <th>Pelanggan</th>
                     <th>Items</th>
-                    <th style="width:120px">Status</th>
-                    <th style="width:160px">Waktu</th>
-                    <th style="width:150px">Aksi</th>
+                    <th class="col-center">Status</th>
+                    <th class="col-center">Waktu</th>
+                    <th class="col-center">Aksi</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -171,14 +174,14 @@ if (!empty($orderIds)) {
                     $items = $detailsByOrder[$id] ?? [];
                 ?>
                     <tr>
-                        <td><?= $i+1 ?></td>
-                        <td><?= e($o['id_pesanan']) ?></td>
+                        <td class="col-id"><?= $i+1 ?></td>
+                        <td class="col-id"><?= e($o['id_pesanan']) ?></td>
                         <td>
                             <div><strong><?= e($o['nama_pembeli'] ?: '—') ?></strong></div>
                         </td>
                         <td class="items-list">
                             <?php if (empty($items)): ?>
-                                <div class="small-muted">Tidak ada item (belum ada detail)</div>
+                                <div class="small-muted">Tidak ada item </div>
                             <?php else: ?>
                                 <?php foreach ($items as $it): ?>
                                     <div>
@@ -189,22 +192,22 @@ if (!empty($orderIds)) {
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </td>
-                        <td>
+                        <td class="col-center">
                             <div style="margin-bottom:6px;"><strong style="text-transform:capitalize"><?= e($o['status_pesanan']) ?></strong></div>
                             <div class="small-muted">Total: Rp <?= number_format((float)$o['total_harga'],0,',','.') ?></div>
                         </td>
-                        <td>
+                        <td class="col-center">
                             <?= e($o['tanggal_pesanan']) ?><br>
                             <div class="small-muted">Bayar <?= number_format((float)$o['bayar'],0,',','.') ?> — Kembali <?= number_format((float)$o['kembalian'],0,',','.') ?></div>
                         </td>
-                        <td>
-                            <form class="status-form" method="POST" style="margin:0">
+                        <td class="col-center">
+                            <form class="status-form" method="POST" style="margin:0;justify-content:center">
                                 <input type="hidden" name="action" value="update_status">
                                 <input type="hidden" name="id_pesanan" value="<?= $id ?>">
 
                                 <select name="status" aria-label="status">
                                     <?php
-                                    $options = ['pending'=>'Pending','diproses'=>'Diproses','dimasak'=>'Dimasak','selesai'=>'Selesai','batal'=>'Batal'];
+                                    $options = ['diproses'=>'Diproses','dimasak'=>'Dimasak','selesai'=>'Selesai','batal'=>'Batal'];
                                     foreach ($options as $val => $label):
                                         $sel = ($val === $o['status_pesanan']) ? 'selected' : '';
                                     ?>

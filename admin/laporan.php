@@ -85,11 +85,17 @@ if (!empty($orders)) {
 }
 
 // compute summary from DB data
-$totalOrders = count($orders);
+$totalOrders = 0; // Reset count to only include valid orders
 $totalRevenue = 0.0;
 $itemsCount = [];
 $perDay = []; // aggregate by date (Y-m-d)
 foreach ($orders as $o) {
+  // Skip cancelled orders from calculations
+  if ($o['status_pesanan'] === 'batal') {
+      continue;
+  }
+
+  $totalOrders++;
   $totalRevenue += (float)$o['total_harga'];
   $details = $orderDetails[$o['id_pesanan']] ?? [];
   foreach ($details as $it) {
@@ -205,7 +211,7 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 <body>
   <?php /* layout header included inline in this file; no external include needed */ ?>
   <header class="topbar">
-    <div class="brand"><div class="logo">R</div><h1>Restoran Admin</h1></div>
+    <div class="brand"><div class="logo">R</div><h1>Rasa Laut Nusantara</h1></div>
     <nav></nav>
     <div class="user"><div class="avatar"><?= strtoupper(substr($_SESSION['user']['nama'],0,1)) ?></div></div>
   </header>
