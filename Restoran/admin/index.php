@@ -20,7 +20,7 @@ $user = $_SESSION['user'];
 <header class="topbar">
   <div class="brand">
     <div class="logo">R</div>
-    <h1>Restoran Laut Nusantara</h1>
+    <h1>Restoran Admin</h1>
     
   </div>
   <nav>
@@ -41,6 +41,7 @@ $user = $_SESSION['user'];
 </header>
 
 <div class="layout">
+  
   <aside class="sidebar">
     <div class="menu">
       <a class="active" href="index.php">Home</a>
