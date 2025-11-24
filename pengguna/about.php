@@ -6,39 +6,62 @@
     <title>Tentang Kami — Rasa Laut Nusantara</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* Layout-only changes. Colors are preserved from the original theme. */
+
+        /* keep global fonts/defaults unchanged; only adjust spacing/layout */
         .about-section{
             max-width:900px;
             margin:60px auto;
-            background:#fff;
+            background:#fff; /* preserve original white card */
             padding:30px;
             border-radius:12px;
-            box-shadow:0 6px 20px rgba(0,0,0,.1);
+            box-shadow:0 8px 28px rgba(0,0,0,.08);
+            border:1px solid rgba(0,0,0,0.03);
         }
+
         .about-section h2{
             text-align:center;
-            margin-bottom:10px;
+            margin-bottom:6px;
+            font-size:28px;
+            font-weight:700;
+            color:inherit;
         }
+
         .about-section p{
-            line-height:1.7;
+            line-height:1.75;
             margin-bottom:14px;
             font-size:16px;
+            color:inherit;
+            text-align:center;
         }
-        .team{
-            margin-top:30px;
-        }
+
+        .team{margin-top:30px;}
+
+        .team h3{font-size:20px;margin-bottom:14px;text-align:center}
+
+
+        /* Keep original card layout: use flex so positions don't change */
         .team-members{
             display:flex;
             gap:20px;
             justify-content:center;
             flex-wrap:wrap;
         }
+
         .member{
-            background:#fafafa;
-            width:200px;
+            background:#fafafa; /* keep original card color */
+            width:120px;
             text-align:center;
             padding:18px 10px;
             border-radius:10px;
-            box-shadow:0 3px 12px rgba(0,0,0,.07);
+            margin-bottom: 12px;
+            transition: transform .25s ease, box-shadow .25s ease;
+            box-shadow:0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .member:hover{
+            transform:translateY(-6px);
+            box-shadow:0 14px 36px rgba(0,0,0,.08);
         }
 
         .member img{
@@ -48,37 +71,37 @@
             border-radius:50%;
             margin-bottom:12px;
             object-position:top;
-            border:3px solid #0275d8;
+            border:3px solid #0275d8; /* preserve original accent */
         }
 
         .member strong{
             display:block;
             font-size:17px;
-            margin-bottom:4px;
+            margin-bottom:6px;
             color:#222;
         }
 
-        .member p{
-            font-size:14px;
-            color:#555;
-            margin:0;
-        }
+        .member p{font-size:14px;color:#555;margin:0}
 
         .btn-back{
             display:block;
-            margin:25px auto 0;
-            background:#0275d8;
+            margin:26px auto 0;
+            background:#0275d8; /* original blue */
             color:#fff;
-            padding:10px 25px;
+            padding:10px 22px;
             border-radius:8px;
             text-decoration:none;
             text-align:center;
             width:fit-content;
-            transition:.3s;
+            transition:.25s;
+
         }
-        .btn-back:hover{
-            background:#025aa5;
-        }
+        .btn-back:hover{background:#025aa5}
+
+        /* footer layout spacing only */
+        .contact-footer{margin-top:34px;padding:24px 12px}
+
+        .copy{margin-top:18px;color:#666;text-align:center;font-size:13px}
     </style>
 </head>
 <body>
@@ -117,21 +140,35 @@
         <div class="team-members">
 
             <div class="member">
-                <img src="images/agung.jpg" alt="">
-                <strong>Chef Agung</strong>
+                <img src="images/satya.jpg" alt="">
+                <strong>Satya</strong>
                 <p>Head Chef</p>
+            
             </div>
 
             <div class="member">
-                <img src="images/ayu.jpg" alt="">
-                <strong>Dina Ayu</strong>
+                <img src="images/rozi.jpg" alt="">
+                <strong>Rozikin</strong>
                 <p>Manager Operasional</p>
+              
+            </div>
+
+            <div class="member">
+                <img src="images/budi.jpg" alt="">
+                <strong>Budi</strong>
+                <p>Barista & Mixologist</p>
+            </div>
+
+            <div class="member">
+                <img src="images/lina.jpg" alt="">
+                <strong>Aisyah</strong>
+                <p>Customer Relations</p>
             </div>
 
             <div class="member">
                 <img src="images/raka.jpg" alt="">
-                <strong>Raka</strong>
-                <p>Barista & Mixologist</p>
+                <strong>Brian</strong>
+                <p>Logistik & Pengadaan</p>
             </div>
 
         </div>
