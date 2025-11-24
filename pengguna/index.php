@@ -97,6 +97,7 @@ usort($products, function($a, $b){
           <a href="#" id="ourMenu">Menu Kami</a>
           <a href="about.php">Tentang Kami</a>
           <a href="#" id="contact">Contact</a>
+          <a href="../admin/login.php" id="login">Login</a>
         </nav>
       </div>
       <div class="actions">
