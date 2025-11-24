@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
 
 require 'koneksi.php'; // pastikan $mysqli (mysqli connection) tersedia dari sini
 
+$user = $_SESSION['user'];
+
 function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 
 /*
@@ -116,7 +118,7 @@ if (!empty($orderIds)) {
     <link rel="stylesheet" href="css/admin.css">
     <style>
         table { width:100%; border-collapse:collapse }
-        td,th { padding:8px; border-bottom:1px solid #eee; vertical-align: top; }
+        td,th { padding:8px; border-bottom:1px solid #b43737ff; vertical-align: top; }
         .status-form { display:flex; gap:6px; align-items:center }
         .items-list { font-size: 13px; color: #333; }
         .items-list div { margin-bottom: 4px; }
@@ -125,21 +127,33 @@ if (!empty($orderIds)) {
     </style>
 </head>
 <body>
-<header class="topbar">
+    <header class="topbar">
     <div class="brand">
-        <div class="logo">R</div>
-        <h1>Transaksi</h1>
+      <div class="logo" >R</div>
+      <h1>Restoran Admin</h1>
     </div>
-
+    <nav>
+      <div class="top-menu">
+        <a href="index.php">Dashboard</a>
+        <a href="data_master.php">Data Master</a>
+        <a href="transaksi.php">Transaksi</a>
+        <a href="laporan.php">Laporan</a>
+      </div>
+    </nav>
     <div class="user">
-        <div class="avatar"><?= e(strtoupper(substr($_SESSION['user']['nama'],0,1))) ?></div>
+      <div class="avatar"><?= strtoupper(substr($user['nama'],0,1)) ?></div>
+      <div>
+        <div class="name"><?= htmlspecialchars($user['nama']) ?></div>
+        <a href="logout.php">Logout</a>
+      </div>
     </div>
-</header>
+  </header>
 
 <div class="layout">
     <aside class="sidebar">
         <div class="menu">
             <a href="index.php">Home</a>
+            <a href="data_master.php">Data Master</a>
             <a href="transaksi.php" class="active">Transaksi</a>
             <a href="laporan.php">Laporan</a>
         </div>

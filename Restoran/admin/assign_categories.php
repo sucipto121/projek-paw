@@ -4,16 +4,6 @@
 
 require 'koneksi.php';
 
-$mapping = [
-    'Seafood' => ['seafood','lobster','udang','cumi','kepiting','ikan','kakap','calamari'],
-    'Minuman' => ['tea','teh','lemon','jus','juice','cappuccino','coffee','kopi','minuman','iced','es','air'],
-    'Pasta' => ['pasta','spaghetti','penne'],
-    'Salad' => ['salad','greens'],
-    'Dessert' => ['pancake','cake','dessert','ice cream','ice-cream','es krim','tiramisu','pudding'],
-    'Snack' => ['crispy','fried','snack','goreng','kebab','spring roll','calamari'],
-    'Uncategorized' => []
-];
-
 $created = [];
 foreach (array_keys($mapping) as $catName) {
     $q = $mysqli->prepare('SELECT id_kategori FROM kategori WHERE nama_kategori = ? LIMIT 1');

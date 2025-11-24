@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
 
 require 'koneksi.php';
 
+$user = $_SESSION['user'];
+
 // parse date filter
 $start = isset($_GET['start']) ? trim($_GET['start']) : '';
 $end = isset($_GET['end']) ? trim($_GET['end']) : '';
@@ -15,6 +17,7 @@ function parseDate($s) {
   $t = strtotime($s);
   return $t === false ? null : $t;
 }
+
 
 $sTs = parseDate($start);
 $eTs = parseDate($end);
@@ -205,9 +208,25 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 <body>
   <?php /* layout header included inline in this file; no external include needed */ ?>
   <header class="topbar">
-    <div class="brand"><div class="logo">R</div><h1>Restoran Admin</h1></div>
-    <nav></nav>
-    <div class="user"><div class="avatar"><?= strtoupper(substr($_SESSION['user']['nama'],0,1)) ?></div></div>
+    <div class="brand">
+      <div class="logo">R</div>
+      <h1>Restoran Admin</h1>
+    </div>
+    <nav>
+      <div class="top-menu">
+        <a href="index.php">Dashboard</a>
+        <a href="data_master.php">Data Master</a>
+        <a href="transaksi.php">Transaksi</a>
+        <a href="laporan.php">Laporan</a>
+      </div>
+    </nav>
+    <div class="user">
+      <div class="avatar"><?= strtoupper(substr($user['nama'],0,1)) ?></div>
+      <div>
+        <div class="name"><?= htmlspecialchars($user['nama']) ?></div>
+        <a href="logout.php">Logout</a>
+      </div>
+    </div>
   </header>
 
   <div class="layout">

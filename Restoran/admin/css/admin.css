@@ -1,7 +1,9 @@
 /* ========== Base & Layout ========== */
 :root {
-    --primary: #0b74de;
-    --secondary: #20b1ff;
+    --primary: #ff8a2b;
+    --secondary: #ffb86b;
+    --btn-primary: #ff8a2b; /* tombol oranye */
+    --btn-secondary: #ffb86b; /* tombol oranye sekunder */
     --text: #1f2a37;
     --muted: #6c7a89;
     --card: #ffffff;
@@ -32,7 +34,7 @@ html, body {
 
 .top-menu a {
     padding: 8px 14px;
-    background: #e9f1ff;    /* warna kotak */
+    background: #fff3e6;    /* warna kotak (oranye pastel) */
     border-radius: 8px;
     text-decoration: none;
     color: var(--text);
@@ -43,7 +45,7 @@ html, body {
 }
 
 .top-menu a:hover {
-    background: #d7e8ff;
+    background: #ffe6cc;
     border-color: var(--primary);
     color: var(--primary);
 }
@@ -132,12 +134,12 @@ html, body {
 }
 
 .sidebar a:hover {
-    background: #f0f7ff;
+    background: #fff4ee;
     border-left-color: var(--primary);
 }
 
 .sidebar a.active {
-    background: #eaf3ff;
+    background: #fff0e6;
     border-left-color: var(--primary);
     font-weight: 600;
 }
@@ -176,7 +178,7 @@ html, body {
 }
 
 .btn.primary {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    background: linear-gradient(90deg, var(--btn-primary), var(--btn-secondary));
     color: white;
 }
 
@@ -185,12 +187,12 @@ html, body {
 }
 
 .btn.ghost {
-    background: #e7eef7;
+    background: #fff4e9;
     color: var(--text);
 }
 
 .btn.ghost:hover {
-    background: #d8e3f2;
+    background: #ffe8d5;
 }
 
 /* ========== Cards ========== */
@@ -230,7 +232,7 @@ table {
 }
 
 th {
-    background: #f7faff;
+    background: #fff7f2;
     padding: 10px;
     font-weight: 600;
     border-bottom: 1px solid var(--border);
@@ -243,12 +245,12 @@ td {
 }
 
 tr:hover td {
-    background: #f9fcff;
+    background: #fffaf6;
 }
 
 tfoot td {
     font-weight: 700;
-    background: #f7faff;
+    background: #fff7f2;
 }
 
 /* ========== Forms ========== */
@@ -291,6 +293,15 @@ input[type=date]:focus {
 body {
     font-family: Arial, sans-serif;
     background: #f7f7f7;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: inherit; /* warna tetap */
+    border-bottom: 1px solid #ddd;
 }
 
 /* ======== TOPBAR ======== */
@@ -398,14 +409,6 @@ textarea {
     border: none;
 }
 
-.primary {
-    background: #1976d2;
-    color: white;
-}
-
-.primary:hover {
-    background: #125ea7;
-}
 
 /* TABLES */
 table {

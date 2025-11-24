@@ -6,6 +6,9 @@ if (!isset($_SESSION['user'])) {
 }
 require 'koneksi.php';
 
+// Pastikan variabel $user tersedia untuk header dan tampilan
+$user = $_SESSION['user'];
+
 // Handle create kategori
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'add_kategori') {
@@ -55,7 +58,27 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
   <style>label{display:block;margin-bottom:6px} table{width:100%;border-collapse:collapse} td,th{padding:8px;border-bottom:1px solid #eee}</style>
 </head>
 <body>
-  <header class="topbar"><div class="brand"><div class="logo">R</div><h1>Data Master</h1></div><div class="user"><div class="avatar"><?= strtoupper(substr($_SESSION['user']['nama'],0,1)) ?></div></div></header>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">R</div>
+      <h1>Restoran Admin</h1>
+    </div>
+    <nav>
+      <div class="top-menu">
+        <a href="index.php">Dashboard</a>
+        <a href="data_master.php">Data Master</a>
+        <a href="transaksi.php">Transaksi</a>
+        <a href="laporan.php">Laporan</a>
+      </div>
+    </nav>
+    <div class="user">
+      <div class="avatar"><?= strtoupper(substr($user['nama'],0,1)) ?></div>
+      <div>
+        <div class="name"><?= htmlspecialchars($user['nama']) ?></div>
+        <a href="logout.php">Logout</a>
+      </div>
+    </div>
+  </header>
   <div class="layout">
     <aside class="sidebar"><div class="menu"><a href="index.php">Home</a><a class="active" href="data_master.php">Data Master</a><a href="transaksi.php">Transaksi</a><a href="laporan.php">Laporan</a></div></aside>
     <main class="main">
