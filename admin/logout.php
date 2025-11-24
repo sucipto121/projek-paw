@@ -20,5 +20,5 @@ if (isset($_COOKIE['remember'])) {
 session_destroy();
 
 // Redirect to login page with message
-header('Location: login.php?err=' . urlencode('Anda telah logout'));
+header('Location: ../pengguna/index.php');
 exit;
