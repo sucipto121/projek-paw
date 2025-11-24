@@ -204,15 +204,22 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Laporan — Admin</title>
+  <title>Laporan Admin</title>
   <link rel="stylesheet" href="css/admin.css">
   <style>table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #eee;text-align:left}tfoot td{font-weight:700}</style>
   </head>
 <body>
   <?php /* layout header included inline in this file; no external include needed */ ?>
   <header class="topbar">
-    <div class="brand"><div class="logo">R</div><h1>Rasa Laut Nusantara</h1></div>
-    <nav></nav>
+    <div class="brand"><div class="logo">R</div>
+    <h1>Restoran Laut Nusantara</h1></div>
+    <nav>
+      <div class="top-menu">
+        <a href="index.php">Dashboard</a>
+        <a href="data_master.php">Data Master</a>
+        <a href="transaksi.php">Transaksi</a>
+        <a href="laporan.php">Laporan</a>
+    </nav>
     <div class="user"><div class="avatar"><?= strtoupper(substr($_SESSION['user']['nama'],0,1)) ?></div></div>
   </header>
 

@@ -20,21 +20,16 @@ $user = $_SESSION['user'];
 <header class="topbar">
   <div class="brand">
     <div class="logo">R</div>
-    <h1>Rasa Laut Nusantara</h1>
+    <h1>Restoran Laut Nusantara</h1>
     
   </div>
   <nav>
-    <?php if(!empty($user['level']) && $user['level'] == 1): ?>
-      <div class="top-menu">
-        <a href="index.php">Dashboard</a>
-        <a href="data_master.php">Data Master</a>
-        <a href="transaksi.php">Transaksi</a>
-        <a href="laporan.php">Laporan</a></div>
-    <?php else: ?>
+    <div class="top-menu">
       <a href="index.php">Dashboard</a>
+      <a href="data_master.php">Data Master</a>
       <a href="transaksi.php">Transaksi</a>
       <a href="laporan.php">Laporan</a>
-    <?php endif; ?>
+    </div>
   </nav>
   <div class="user">
     <div class="avatar"><?= strtoupper(substr($user['nama'],0,1)) ?></div>

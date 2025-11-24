@@ -130,10 +130,18 @@ if (!empty($orderIds)) {
 <body>
 <header class="topbar">
     <div class="brand">
-        <div class="logo">R</div>
-        <h1>Transaksi</h1>
+        <div class="logo">T</div>
+        <h1>Restoran Laut Nusantara</h1>
     </div>
 
+    <nav>
+      <div class="top-menu">
+        <a href="index.php">Dashboard</a>
+        <a href="data_master.php">Data Master</a>
+        <a href="transaksi.php">Transaksi</a>
+        <a href="laporan.php">Laporan</a>
+      </div>
+    </nav>    
     <div class="user">
         <div class="avatar"><?= e(strtoupper(substr($_SESSION['user']['nama'],0,1))) ?></div>
     </div>
@@ -143,6 +151,7 @@ if (!empty($orderIds)) {
     <aside class="sidebar">
         <div class="menu">
             <a href="index.php">Home</a>
+            <a href="data_master.php">Data Master</a>
             <a href="transaksi.php" class="active">Transaksi</a>
             <a href="laporan.php">Laporan</a>
         </div>

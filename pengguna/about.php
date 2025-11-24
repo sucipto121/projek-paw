@@ -160,13 +160,13 @@
             </div>
 
             <div class="member">
-                <img src="images/lina.jpg" alt="">
+                <img src="images/aisyah.jpg" alt="">
                 <strong>Aisyah</strong>
                 <p>Customer Relations</p>
             </div>
 
             <div class="member">
-                <img src="images/raka.jpg" alt="">
+                <img src="images/brian.jpg" alt="">
                 <strong>Brian</strong>
                 <p>Logistik & Pengadaan</p>
             </div>

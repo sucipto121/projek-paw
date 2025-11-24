@@ -1,7 +1,9 @@
 /* ========== Base & Layout ========== */
 :root {
-    --primary: #de5c0b;
-    --secondary: #ff4520;
+    --primary: #ff8a2b;
+    --secondary: #ffb86b;
+    --btn-primary: #ff8a2b; /* tombol oranye */
+    --btn-secondary: #ffb86b; /* tombol oranye sekunder */
     --text: #1f2a37;
     --muted: #6c7a89;
     --card: #ffffff;
@@ -32,7 +34,7 @@ html, body {
 
 .top-menu a {
     padding: 8px 14px;
-    background: #e9f1ff;    /* warna kotak */
+    background: #fff3e6;    /* warna kotak (oranye pastel) */
     border-radius: 8px;
     text-decoration: none;
     color: var(--text);
@@ -43,7 +45,7 @@ html, body {
 }
 
 .top-menu a:hover {
-    background: #d7e8ff;
+    background: #ffe6cc;
     border-color: var(--primary);
     color: var(--primary);
 }
@@ -132,12 +134,12 @@ html, body {
 }
 
 .sidebar a:hover {
-    background: #f0f7ff;
+    background: #fff4ee;
     border-left-color: var(--primary);
 }
 
 .sidebar a.active {
-    background: #eaf3ff;
+    background: #fff0e6;
     border-left-color: var(--primary);
     font-weight: 600;
 }
@@ -176,7 +178,7 @@ html, body {
 }
 
 .btn.primary {
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    background: linear-gradient(90deg, var(--btn-primary), var(--btn-secondary));
     color: white;
 }
 
@@ -185,12 +187,12 @@ html, body {
 }
 
 .btn.ghost {
-    background: #e7eef7;
+    background: #fff4e9;
     color: var(--text);
 }
 
 .btn.ghost:hover {
-    background: #d8e3f2;
+    background: #ffe8d5;
 }
 
 /* ========== Cards ========== */
@@ -230,7 +232,7 @@ table {
 }
 
 th {
-    background: #f7faff;
+    background: #fff7f2;
     padding: 10px;
     font-weight: 600;
     border-bottom: 1px solid var(--border);
@@ -243,12 +245,12 @@ td {
 }
 
 tr:hover td {
-    background: #f9fcff;
+    background: #fffaf6;
 }
 
 tfoot td {
     font-weight: 700;
-    background: #f7faff;
+    background: #fff7f2;
 }
 
 /* ========== Forms ========== */
@@ -280,4 +282,163 @@ input[type=date]:focus {
         border: 1px solid #ccc;
     }
 }
+
+/* ======== GLOBAL ======== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: inherit; /* warna tetap */
+    border-bottom: 1px solid #ddd;
+}
+
+/* ======== TOPBAR ======== */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: inherit; /* warna tetap */
+    border-bottom: 1px solid #ddd;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand .logo {
+    background: #fff;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+}
+
+.topbar h1 {
+    font-size: 20px;
+}
+
+/* ======== LAYOUT ======== */
+.layout {
+    display: flex;
+}
+
+/* ======== SIDEBAR ======== */
+.sidebar {
+    width: 200px;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    min-height: 100vh;
+}
+
+.sidebar .menu a {
+    display: block;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid transparent;
+}
+
+.sidebar .menu a:hover {
+    background: #e6e6e6;
+}
+
+.sidebar .active {
+    border: 1px solid #bbb;
+    font-weight: bold;
+}
+
+/* ======== MAIN ======== */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* ======== CARD / FORM ======== */
+.card {
+    background: #fff;
+    padding: 18px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    margin-bottom: 15px;
+}
+
+/* FORM */
+label {
+    display: block;
+    margin-bottom: 12px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+textarea {
+    min-height: 70px;
+}
+
+/* BUTTONS */
+.btn {
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: none;
+}
+
+
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #f1f1f1;
+    text-align: left;
+    padding: 10px;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #fafafa;
+}
+
+/* USERS */
+.user .avatar {
+    background: #fff;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 50%;
+    font-weight: bold;
+    border: 1px solid #ccc;
+}
+
 
