@@ -1,0 +1,52 @@
+[
+    {
+        "table": "8",
+        "customer": "riislo",
+        "items": [
+            {
+                "title": "Cappuccino",
+                "price": 6000,
+                "qty": 8
+            },
+            {
+                "title": "Jus Melon",
+                "price": 6000,
+                "qty": 9
+            },
+            {
+                "title": "Cumi Goreng Tepung",
+                "price": 60000,
+                "qty": 1
+            },
+            {
+                "title": "Udang Saus Mentega",
+                "price": 35000,
+                "qty": 1
+            },
+            {
+                "title": "Kepiting Asam Manis",
+                "price": 45000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-22T20:47:59.003Z",
+        "order_code": "ORDF0288E",
+        "order_id": "6922217f02894"
+    },
+    {
+        "table": "3",
+        "customer": "skkk",
+        "items": [
+            {
+                "title": "Cumi Goreng Tepung",
+                "price": 60000,
+                "qty": 1
+            }
+        ],
+        "status": "Pending",
+        "time": "2025-11-23T03:56:33.868Z",
+        "order_code": "ORD1EB4FC",
+        "order_id": "692285f1eb505"
+    }
+]

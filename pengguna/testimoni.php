@@ -32,17 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     }
 
-                    // insert into ulasan with provided id_menu and rating (can be NULL)
+                    // insert ulasan
                     $insU = $mysqli->prepare('INSERT INTO ulasan (id_pembeli, id_menu, rating, komentar) VALUES (?, ?, ?, ?)');
                     if ($insU) {
-                        // bind parameters: i (id_pembeli), i (id_menu), i (rating), s (komentar)
-                        $bindIdMenu = $id_menu;
-                        $bindRating = $rating;
-                        $insU->bind_param('iiis', $id_pembeli, $bindIdMenu, $bindRating, $review);
+                        $insU->bind_param('iiis', $id_pembeli, $id_menu, $rating, $review);
                         $dbSaved = $insU->execute();
-                        if ($insU->error) {
-                            $dbError = $insU->error;
-                        }
+                        if ($insU->error) $dbError = $insU->error;
                         $insU->close();
                     } else {
                         $dbError = $mysqli->error;
@@ -58,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($dbSaved) {
-            $message = "Terima kasih, testimoni berhasil dikirim!";
+            $message = "Terima kasih! Testimoni Anda berhasil dikirim.";
         } else {
-            $message = "Gagal menyimpan testimoni ke database.";
-            // log DB errors for debugging
-            $logFile = __DIR__ . '/../admin/ulasan_errors.log';
-            $logEntry = date('Y-m-d H:i:s') . " | name=" . $name . " | id_menu=" . ($id_menu ?? 'NULL') . " | rating=" . ($rating ?? 'NULL') . " | error=" . $dbError . PHP_EOL;
-            file_put_contents($logFile, $logEntry, FILE_APPEND);
+            $message = "Gagal menyimpan testimoni.";
+            file_put_contents(__DIR__ . '/../admin/ulasan_errors.log',
+                date('Y-m-d H:i:s') . " | name=$name | id_menu=$id_menu | rating=$rating | error=$dbError\n",
+                FILE_APPEND
+            );
         }
     } else {
         $message = "Nama dan testimoni harus diisi!";
@@ -75,85 +70,137 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kirim Testimoni — Rasa Laut Nusantara</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .form-container{
-            max-width:500px;
-            margin:50px auto;
-            background:#fff;
-            padding:25px;
-            border-radius:10px;
-            box-shadow:0 5px 15px rgba(0,0,0,.1);
-        }
-        input, textarea{
-            width:100%;
-            padding:10px;
-            margin:8px 0;
-            border:1px solid #ccc;
-            border-radius:5px;
-            font-size:14px;
-        }
-        button{
-            background:#0275d8;
-            color:#fff;
-            border:none;
-            padding:10px 20px;
-            border-radius:5px;
-            cursor:pointer;
-            font-size:15px;
-        }
-        button:hover{
-            background:#025aa5;
-        }
-        .message{
-            margin:10px 0;
-            color:green;
-        }
-        a.back{
-            display:inline-block;
-            margin-top:10px;
-            text-decoration:none;
-            color:#0275d8;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kirim Testimoni — Rasa Laut Nusantara</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f7f5f2; /* warna background website utama */
+        padding: 40px;
+        color: #1a1a1a;
+    }
+
+    .form-container {
+        max-width: 550px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        border-top: 5px solid #EF4F4F; /* warna merah coral utama tema */
+    }
+
+    h2 {
+        text-align: center;
+        font-weight: 700;
+        color: #EF4F4F; /* warna heading tema */
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 7px;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        font-size: 14px;
+        background: #fafafa;
+        transition: 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #EF4F4F;
+        background: white;
+        box-shadow: 0 0 4px rgba(239,79,79,0.3);
+    }
+
+    button {
+        width: 100%;
+        margin-top: 20px;
+        background: #EF4F4F;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        background: #D93F3F;
+        transform: translateY(-1px);
+    }
+
+    .message {
+        text-align: center;
+        font-weight: 600;
+        padding: 10px;
+        border-radius: 8px;
+        background: #ffe7e7;
+        color: #D93F3F;
+        margin-bottom: 10px;
+        border: 1px solid #ffb3b3;
+    }
+
+    .back {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        text-decoration: none;
+        color: #EF4F4F;
+        font-weight: 600;
+    }
+
+    .back:hover {
+        text-decoration: underline;
+    }
+
+</style>
+
 </head>
 <body>
 
 <div class="form-container">
     <h2>Kirim Testimoni</h2>
-    <?php if($message): ?>
-        <p class="message"><?=htmlspecialchars($message)?></p>
+
+    <?php if ($message): ?>
+        <p class="message"><?= htmlspecialchars($message) ?></p>
     <?php endif; ?>
+
     <?php
-    // load menu list for optional association
+    // Load menu list
     $menuOptions = [];
     try {
         require_once __DIR__ . '/../admin/koneksi.php';
-        if (isset($mysqli) && $mysqli instanceof mysqli) {
-            $res = $mysqli->query('SELECT id_menu, nama_menu FROM menu ORDER BY nama_menu');
-            if ($res) {
-                while ($r = $res->fetch_assoc()) {
-                    $menuOptions[] = $r;
-                }
-            }
+        if (isset($mysqli)) {
+            $res = $mysqli->query("SELECT id_menu, nama_menu FROM menu ORDER BY nama_menu");
+            while ($row = $res->fetch_assoc()) $menuOptions[] = $row;
         }
-    } catch (Throwable $e) {
-        // ignore
-    }
+    } catch (Throwable $e) {}
     ?>
 
     <form action="" method="post">
-        <label>Nama:</label>
-        <input type="text" name="name" placeholder="Nama Anda" required>
 
-        <label>Menu (opsional):</label>
+        <label>Nama Anda:</label>
+        <input type="text" name="name" placeholder="Masukkan nama Anda" required>
+
+        <label>Pilih Menu (Opsional):</label>
         <select name="id_menu">
-            <option value="">-- Pilih menu (opsional) --</option>
+            <option value="">Tidak memilih menu</option>
             <?php foreach ($menuOptions as $m): ?>
-                <option value="<?=htmlspecialchars($m['id_menu'])?>"><?=htmlspecialchars($m['nama_menu'])?></option>
+                <option value="<?= $m['id_menu'] ?>"><?= htmlspecialchars($m['nama_menu']) ?></option>
             <?php endforeach; ?>
         </select>
 
@@ -161,15 +208,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <select name="rating" required>
             <option value="">-- Pilih rating --</option>
             <?php for ($i=5;$i>=1;$i--): ?>
-                <option value="<?=$i?>"><?=$i?> &#9733;</option>
+                <option value="<?=$i?>"><?=$i?> ★</option>
             <?php endfor; ?>
         </select>
 
         <label>Testimoni:</label>
-        <textarea name="review" rows="5" placeholder="Tulis testimoni Anda..." required></textarea>
+        <textarea name="review" rows="5" placeholder="Tulis pengalaman Anda..." required></textarea>
+
         <button type="submit">Kirim Testimoni</button>
     </form>
-    <a href="index.php" class="back">Kembali ke Menu</a>
+
+    <a href="index.php" class="back">← Kembali ke Menu</a>
 </div>
 
 </body>
