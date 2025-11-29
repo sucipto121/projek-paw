@@ -37,7 +37,7 @@ if (!($already && !$force)) {
         <section class="card">
             <div class="brand">
                 <div class="logo">R</div>
-                <h1>Restoran Admin</h1>
+                <h1>Rasa Laut Nusantara</h1>
                 <p class="muted">Masuk untuk mengelola pesanan dan menu</p>
             </div>
 
@@ -64,8 +64,8 @@ if (!($already && !$force)) {
                 <input type="password" name="fakepasswordremembered" id="fakepasswordremembered" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" tabindex="-1" autocomplete="off">
 
                 <label class="field">
-                    <span class="label-text">Username atau Email</span>
-                    <input name="username" id="username" type="text" required placeholder="admin atau email@contoh.com" maxlength="191" autocomplete="off" value="">
+                    <span class="label-text">Username</span>
+                    <input name="username" id="username" type="text" required placeholder="admin" maxlength="191" autocomplete="off" value="">
                 </label>
 
                 <label class="field">
@@ -80,7 +80,6 @@ if (!($already && !$force)) {
                     <label class="checkbox">
                         <input type="checkbox" name="remember"> Ingat saya
                     </label>
-                    <a class="link" href="#">Lupa kata sandi?</a>
                 </div>
 
                 <button id="submitBtn" class="btn primary" type="submit">Masuk</button>

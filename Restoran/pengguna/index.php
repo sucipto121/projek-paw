@@ -85,18 +85,22 @@ usort($products, function($a, $b){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Restoran — Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <div class="logo">Rasa Laut Nusantara</div>
+        <div class="logo" >Rasa Laut Nusantara</div>
         <nav class="main-nav">
           <a href="#" id="home">Beranda</a>
           <a href="#" id="ourMenu">Menu Kami</a>
           <a href="about.php">Tentang Kami</a>
           <a href="#" id="contact">Contact</a>
+          <a href="../admin/login.php" id="login">Login</a>
         </nav>
       </div>
       <div class="actions">
@@ -108,16 +112,14 @@ usort($products, function($a, $b){
   <!-- Hero -->
   <div class="hero container" id="heroContainer">
     <div class="hero-left">
-      <p class="kicker">MAKAN DI TEMPAT</p>
-      <h1>Rasa yang berbicara lebih keras daripada kata-kata!</h1>
-      <p class="lead">Cara yang kreatif dan mengesankan untuk menyampaikan gagasan bahwa rasa dan pengalaman makanan atau produk melampaui deskripsi belaka.</p>
-      <div class="hero-cta">
-        <button class="btn ghost">Proses Pesanan</button>
-      </div>
-      <ul class="stats">
-        <li><strong>06</strong><span>Remake yang Tercapai</span></li>
-        <li><strong>10</strong><span>Penghargaan</span></li>
-        <li><strong>20</strong><span>Cabang di Seluruh Indonesia</span></li>
+      <p class="kicker" style="font-size: 20px; font-family:playfair Display" >Pesan Seafood Segar Anda</p>
+      <h1 style="font-family: playfair Display;">Kesegaran Laut Indonesia, Tersaji untuk Anda.</h1>
+      <p class="lead">Kami menyajikan aneka hidangan laut terbaik dari berbagai penjuru Nusantara, dimasak dengan bumbu khas dan kesegaran yang terjaga.</p>
+      <ul class="stats" style="margin-top: 65px;">
+        <li><strong>06</strong><span>Tahun Berpengalaman</span></li>
+        <li><strong>10</strong><span>Penghargaan Kuliner</span></li>
+        <li><strong>20</strong><span>Cabang di Indonesia</span></li>
+        <li><strong>1000+</strong><span>Pelanggan Setiap Bulan</span></li>
       </ul>
     </div>
     <div class="hero-right">
@@ -130,7 +132,7 @@ usort($products, function($a, $b){
   <main class="container main">
     <aside class="sidebar">
       <div class="card">
-        <h3>Kategori</h3>
+        <h3 style="font-family: fairplay display; text-align:center">Pilih kategori favorit Anda untuk menemukan hidangan terbaik.</h3>
         <div class="categories" id="categories">
           <?php foreach($categories as $c): ?>
             <button class="chip" data-cat="<?=htmlspecialchars($c)?>"><?=htmlspecialchars($c)?></button>
@@ -139,12 +141,12 @@ usort($products, function($a, $b){
       </div>
 
       <div class="card">
-        <h3>Highlights</h3>
-        <p>Kami membuat makanan lezat dan beraroma menggunakan bahan-bahan organik.</p>
+        <h3 style="text-align: center; font-family: fairplay display">Highlights</h3>
+        <p style="text-align:center">Seafood segar, bumbu terbaik, rasa yang selalu menggugah selera.</p>
       </div>
 
       <div class="card">
-        <h3>Testimoni Pelanggan</h3>
+        <h3 style="font-family: fairplay display; text-align:center">Pengalaman Bersantap dari Pelanggan Setia</h3>
         <div class="testi-slider" id="testiSlider">
           <?php
           // load recent testimonials from database instead of JSON
@@ -185,16 +187,17 @@ usort($products, function($a, $b){
         <div class="slider-controls">
             <button id="prevTesti">&lt;</button>
             <button id="nextTesti">&gt;</button>
+            <a href="testimoni.php" class="btn primary" style="display:block;margin-top:10px; text-decoration:none">Kirim Testimoni</a>
         </div>
-        <a href="testimoni.php" class="btn small" style="display:block;margin-top:10px;">Kirim Testimoni</a>
+        
     </div>
 
     </aside>
 
     <section class="content" id="menuSection">
       <div class="menu-intro">
-        <h2>Menu Kami</h2>
-        <p>Cita rasa hidangannya kaya, bersemangat, dan berkesan.</p>
+        <h2 style="font-family: fairplay display; font-size:27px">Menu Kami</h2>
+        <p>Nikmati Sajian Seafood Premium yang Selalu Memanjakan Lidah.</p>
       </div>
 
       <?php if (!empty($debug_warning)): ?>
@@ -241,20 +244,20 @@ usort($products, function($a, $b){
     <div class="container contact-grid">
       
       <div class="contact-item">
-        <h3>Kontak Kami</h3>
+        <h3 style="font-family: fairplay display;">Kontak Kami</h3>
         <p>Jl. Rasa Laut No. 27, Nusantara</p>
         <p><strong>Tel:</strong> +62 812-3456-7890</p>
         <p><strong>Email:</strong> support@rasalaut.com</p>
       </div>
 
       <div class="contact-item">
-        <h3>Jam Operasional</h3>
+        <h3 style="font-family: fairplay display;">Jam Operasional</h3>
         <p>Senin – Jumat: 10.00 – 22.00</p>
         <p>Sabtu – Minggu: 09.00 – 23.00</p>
       </div>
 
       <div class="contact-item">
-        <h3>Sosial Media</h3>
+        <h3 style="font-family: fairplay display;">Sosial Media</h3>
         <p>Ikuti kami:</p>
         <div class="social">
           <a href="#">Facebook</a>
@@ -269,11 +272,6 @@ usort($products, function($a, $b){
       &copy; <?=date('Y')?> Rasa Laut Nusantara — Semua Hak Dilindungi.
     </div>
   </footer>
-
-
-  <script>
-    const PRODUCTS = <?php echo json_encode($products); ?>;
-  </script>
 
   <div id="cartPanel" class="cart-panel">
     <div class="cart-header">

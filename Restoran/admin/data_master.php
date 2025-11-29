@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
         $status = in_array($_POST['status'] ?? 'tersedia', ['tersedia','habis']) ? $_POST['status'] : 'tersedia';
         if ($nama !== '') {
-            $stmt = $mysqli->prepare('INSERT INTO menu (id_kategori, nama_menu, deskripsi, harga, stok, foto, status) VALUES (?, ?, ?, ?, ?, ?)');
-            if ($stmt) { $stmt->bind_param('issdis', $id_kat, $nama, $des, $harga, $stok, $status, $foto); $stmt->execute(); }
+            $stmt = $mysqli->prepare('INSERT INTO menu (id_kategori, nama_menu, deskripsi, harga, stok, foto, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
+            if ($stmt) { $stmt->bind_param('isssiss', $id_kat, $nama, $des, $harga, $stok, $foto, $status); $stmt->execute(); }
         }
     }
     header('Location: data_master.php');
@@ -53,15 +53,265 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Data Master — Admin</title>
+  <title>Data Master</title>
   <link rel="stylesheet" href="css/admin.css">
-  <style>label{display:block;margin-bottom:6px} table{width:100%;border-collapse:collapse} td,th{padding:8px;border-bottom:1px solid #eee}</style>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f8f9fa;
+    }
+    
+    .main {
+      padding: 24px;
+      max-width: 1400px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      margin-bottom: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
+    }
+    
+    .card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: #ff6b35;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #ffe8e0;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #4a4a4a;
+      font-size: 14px;
+    }
+    
+    input[type="text"], 
+    input[type="number"], 
+    input[name="nama_kategori"],
+    input[name="nama_menu"],
+    input[name="harga"],
+    input[name="stok"],
+    select, 
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #ff6b35;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    input[type="file"] {
+      padding: 12px;
+      border: 2px dashed #ffd4c0;
+      border-radius: 12px;
+      width: 100%;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #fafafa;
+      margin-bottom: 16px;
+    }
+    
+    input[type="file"]:hover {
+      border-color: #ff6b35;
+      background: #fff5f0;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn.primary {
+      background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+    
+    .btn.primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+      background: linear-gradient(135deg, #f7931e 0%, #ff8c42 100%);
+    }
+    
+    .btn.primary:active {
+      transform: translateY(0);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+    
+    thead {
+      background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);
+    }
+    
+    th {
+      padding: 14px 18px;
+      text-align: left;
+      font-weight: 600;
+      color: #ff6b35;
+      border-bottom: 2px solid #ffd4c0;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    
+    th:first-child {
+      border-top-left-radius: 10px;
+    }
+    
+    th:last-child {
+      border-top-right-radius: 10px;
+    }
+    
+    td {
+      padding: 16px 18px;
+      border-bottom: 1px solid #f5f5f5;
+      color: #555;
+    }
+    
+    tbody tr {
+      transition: all 0.2s ease;
+      background: white;
+    }
+    
+    tbody tr:hover {
+      background: #fff5f0;
+      transform: scale(1.002);
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.08);
+    }
+    
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tbody tr:last-child td:first-child {
+      border-bottom-left-radius: 10px;
+    }
+    
+    tbody tr:last-child td:last-child {
+      border-bottom-right-radius: 10px;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-tersedia {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .status-habis {
+      background: #ffebee;
+      color: #c62828;
+    }
+    
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: #999;
+      font-size: 15px;
+    }
+    
+    .form-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+    
+    .form-section.full {
+      grid-template-columns: 1fr;
+    }
+    
+    .brand-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    }
+    
+    @media (max-width: 768px) {
+      .form-section {
+        grid-template-columns: 1fr;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      table {
+        font-size: 12px;
+      }
+      
+      th, td {
+        padding: 10px 12px;
+      }
+    }
+  </style>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <div class="logo">R</div>
-      <h1>Restoran Admin</h1>
+      <img src="images/logo.jpg" alt="Logo Restoran Laut Nusantara" class="brand-logo">
+      <h1>Restoran Laut Nusantara</h1>
     </div>
     <nav>
       <div class="top-menu">
@@ -80,67 +330,150 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
     </div>
   </header>
   <div class="layout">
-    <aside class="sidebar"><div class="menu"><a href="index.php">Home</a><a class="active" href="data_master.php">Data Master</a><a href="transaksi.php">Transaksi</a><a href="laporan.php">Laporan</a></div></aside>
+    <aside class="sidebar">
+      <div class="menu">
+        <a href="index.php">Home</a>
+        <a class="active" href="data_master.php">Data Master</a>
+        <a href="transaksi.php">Transaksi</a>
+        <a href="laporan.php">Laporan</a>
+      </div>
+    </aside>
     <main class="main">
       <div class="card">
-        <h3>Tambah Kategori</h3>
+        <h3>📦 Tambah Kategori</h3>
         <form method="POST">
           <input type="hidden" name="action" value="add_kategori">
-          <label>Nama Kategori <input name="nama_kategori" required></label>
-          <label>Deskripsi <textarea name="deskripsi_kategori"></textarea></label>
-          <button class="btn primary" type="submit">Tambah</button>
+          <label>Nama Kategori</label>
+          <input name="nama_kategori" placeholder="Contoh: Makanan Laut" required>
+          
+          <label>Deskripsi</label>
+          <textarea name="deskripsi_kategori" placeholder="Deskripsi kategori..."></textarea>
+          
+          <button class="btn primary" type="submit">Tambah Kategori</button>
         </form>
       </div>
 
-      <div class="card" style="margin-top:12px">
-        <h3>Tambah Menu</h3>
-        <form method="POST">
+      <div class="card">
+        <h3>🍽️ Tambah Menu</h3>
+        <form method="POST" enctype="multipart/form-data">
           <input type="hidden" name="action" value="add_menu">
-          <label>Kategori <select name="id_kategori">
-            <option value="0">-- Pilih --</option>
-            <?php foreach($kats as $c): ?>
-              <option value="<?= $c['id_kategori'] ?>"><?= e($c['nama_kategori']) ?></option>
-            <?php endforeach; ?>
-          </select></label>
-          <label>Nama Menu <input name="nama_menu" required></label>
-          <label>Deskripsi <textarea name="deskripsi_menu"></textarea></label>
-          <label>Harga <input name="harga" type="number" step="0.01" value="0"></label>
-          <label>Stok <input name="stok" type="number" value="0"></label>
-          <label>Upload Foto<input type="file" name="foto" accept="image/*"></label>
-          <label>Status <select name="status"><option value="tersedia">tersedia</option><option value="habis">habis</option></select></label>
+          
+          <div class="form-section">
+            <div>
+              <label>Kategori</label>
+              <select name="id_kategori" required>
+                <option value="0">-- Pilih Kategori --</option>
+                <?php foreach($kats as $c): ?>
+                  <option value="<?= $c['id_kategori'] ?>"><?= e($c['nama_kategori']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div>
+              <label>Nama Menu</label>
+              <input name="nama_menu" placeholder="Contoh: Udang Bakar" required>
+            </div>
+          </div>
+          
+          <div class="form-section full">
+            <div>
+              <label>Deskripsi</label>
+              <textarea name="deskripsi_menu" placeholder="Deskripsi menu..."></textarea>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <div>
+              <label>Harga (Rp)</label>
+              <input name="harga" type="number" step="0.01" value="0" min="0" placeholder="0">
+            </div>
+            <div>
+              <label>Stok</label>
+              <input name="stok" type="number" value="0" min="0" placeholder="0">
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <div>
+              <label>Upload Foto</label>
+              <input type="file" name="foto" accept="image/*">
+            </div>
+            <div>
+              <label>Status</label>
+              <select name="status">
+                <option value="tersedia">Tersedia</option>
+                <option value="habis">Habis</option>
+              </select>
+            </div>
+          </div>
+          
           <button class="btn primary" type="submit">Tambah Menu</button>
         </form>
       </div>
 
-      <div class="card" style="margin-top:12px">
-        <h3>Daftar Kategori</h3>
-        <table>
-          <thead><tr><th>ID</th><th>Nama</th><th>Deskripsi</th></tr></thead>
-          <tbody>
-            <?php foreach($kats as $c): ?>
-              <tr><td><?= $c['id_kategori'] ?></td><td><?= e($c['nama_kategori']) ?></td><td><?= e($c['deskripsi']) ?></td></tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+      <div class="card">
+        <h3>📋 Daftar Kategori</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nama Kategori</th>
+                <th>Deskripsi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php if (empty($kats)): ?>
+                <tr><td colspan="3" class="empty-state">Belum ada kategori</td></tr>
+              <?php else: ?>
+                <?php foreach($kats as $c): ?>
+                  <tr>
+                    <td><strong>#<?= $c['id_kategori'] ?></strong></td>
+                    <td><strong><?= e($c['nama_kategori']) ?></strong></td>
+                    <td><?= e($c['deskripsi']) ?: '-' ?></td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="card" style="margin-top:12px">
-        <h3>Daftar Menu</h3>
-        <table>
-          <thead><tr><th>ID</th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Status</th></tr></thead>
-          <tbody>
-            <?php foreach($menus as $m): ?>
+      <div class="card">
+        <h3>🍴 Daftar Menu</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
               <tr>
-                <td><?= $m['id_menu'] ?></td>
-                <td><?= e($m['nama_menu']) ?></td>
-                <td><?= e($m['nama_kategori'] ?? '-') ?></td>
-                <td><?= number_format($m['harga'],2,',','.') ?></td>
-                <td><?= (int)$m['stok'] ?></td>
-                <td><?= e($m['status']) ?></td>
+                <th>ID</th>
+                <th>Nama Menu</th>
+                <th>Kategori</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Status</th>
               </tr>
-            <?php endforeach; ?>
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              <?php if (empty($menus)): ?>
+                <tr><td colspan="6" class="empty-state">Belum ada menu</td></tr>
+              <?php else: ?>
+                <?php foreach($menus as $m): ?>
+                  <tr>
+                    <td><strong>#<?= $m['id_menu'] ?></strong></td>
+                    <td><strong><?= e($m['nama_menu']) ?></strong></td>
+                    <td><?= e($m['nama_kategori'] ?? '-') ?></td>
+                    <td><strong>Rp <?= number_format($m['harga'], 0, ',', '.') ?></strong></td>
+                    <td><?= (int)$m['stok'] ?></td>
+                    <td>
+                      <span class="status-badge status-<?= e($m['status']) ?>">
+                        <?= ucfirst(e($m['status'])) ?>
+                      </span>
+                    </td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php endif; ?>
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
   </div>

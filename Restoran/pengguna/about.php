@@ -119,7 +119,7 @@
 </header>
 
 <div class="about-section" id="aboutSection">
-    <h2>Tentang Kami</h2>
+    <h2 style="font-family: fairplay display;">Tentang Kami</h2>
     <p>
         Selamat datang di <strong>Rasa Laut Nusantara</strong>!  
         Kami adalah restoran dengan konsep hidangan laut modern yang menyajikan cita rasa asli Nusantara.  
@@ -136,7 +136,7 @@
     </p>
 
     <div class="team">
-        <h3 style="text-align:center;">Tim Kami</h3>
+        <h3 style="text-align:center; font-family:fairplay display">Tim Kami</h3>
         <div class="team-members">
 
             <div class="member">
@@ -160,13 +160,13 @@
             </div>
 
             <div class="member">
-                <img src="images/lina.jpg" alt="">
+                <img src="images/aisyah.jpg" alt="">
                 <strong>Aisyah</strong>
                 <p>Customer Relations</p>
             </div>
 
             <div class="member">
-                <img src="images/raka.jpg" alt="">
+                <img src="images/brian.jpg" alt="">
                 <strong>Brian</strong>
                 <p>Logistik & Pengadaan</p>
             </div>
