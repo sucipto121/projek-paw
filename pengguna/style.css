@@ -28,6 +28,12 @@ body{
   -moz-osx-font-smoothing:grayscale;
 }
 
+.brand img {
+  width: 60px;
+  height: auto;
+}
+
+
 /* container */
 .container{
   width:95%;

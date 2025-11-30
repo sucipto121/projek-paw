@@ -109,6 +109,7 @@
 <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
+        <img src="images/logo.png">
         <div class="logo">Rasa Laut Nusantara</div>
       </div>
       <nav class="main-nav">
@@ -183,8 +184,8 @@
       <div class="contact-item">
         <h3>Kontak Kami</h3>
         <p>Jl. Rasa Laut No. 27, Nusantara</p>
-        <p><strong>Tel:</strong> +62 812-3456-7890</p>
-        <p><strong>Email:</strong> support@rasalaut.com</p>
+        <p><strong>Telepon:</strong> +62 877-2402-5788</p>
+        <p><strong>Email:</strong> private.media165@gmail.com</p>
       </div>
 
       <div class="contact-item">
