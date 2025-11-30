@@ -115,13 +115,7 @@ usort($products, function($a, $b){
     <div class="hero-left">
       <p class="kicker" style="font-size: 20px; font-family:playfair Display" >Pesan Seafood Segar Anda</p>
       <h1 style="font-family: playfair Display;">Kesegaran Laut Indonesia, Tersaji untuk Anda.</h1>
-      <p class="lead">Kami menyajikan aneka hidangan laut terbaik dari berbagai penjuru Nusantara, dimasak dengan bumbu khas dan kesegaran yang terjaga.</p>
-      <ul class="stats" style="margin-top: 20px;">
-        <li><strong>06</strong><span>Tahun Berpengalaman</span></li>
-        <li><strong>10</strong><span>Penghargaan Kuliner</span></li>
-        <li><strong>20</strong><span>Cabang di Indonesia</span></li>
-        <li><strong>1000+</strong><span>Pelanggan Setiap Bulan</span></li>
-      </ul>
+      <p class="lead">Kami menyajikan aneka hidangan laut terbaik dari berbagai penjuru Nusantara, dimasak dengan bumbu khas dan kesegaran yang terjaga. Setiap sajian diracik dengan penuh ketelitian, menghadirkan cita rasa autentik yang memanjakan setiap suapan dan perpaduan sempurna antara aroma laut segar dan rempah Nusantara yang membuat setiap hidangan begitu menggoda.</p>
     </div>
     <div class="hero-right">
       <div class="pizza-wrap">

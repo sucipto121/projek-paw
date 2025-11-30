@@ -142,26 +142,6 @@ h1{
   gap:12px;
   margin-bottom:16px
 }
-.stats{
-  display:flex;
-  gap:16px;
-  list-style:none;
-  padding:0;
-  margin:0
-}
-.stats li{
-  background:var(--card);
-  padding:10px 14px;
-  border-radius:12px;
-  box-shadow:var(--soft-shadow);
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start
-}
-.stats li strong{
-  font-size:18px;
-  color:#333
-}
 .hero-right{
   flex:1;
   display:flex;

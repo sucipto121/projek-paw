@@ -6,8 +6,6 @@
     <title>Tentang Kami — Rasa Laut Nusantara</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Layout-only changes. Colors are preserved from the original theme. */
-
         /* keep global fonts/defaults unchanged; only adjust spacing/layout */
         .about-section{
             max-width:900px;
