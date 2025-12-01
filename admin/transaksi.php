@@ -224,6 +224,14 @@ if (!empty($orderIds)) {
             font-size: 14px;
         }
         
+        .customer-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 2px 6px rgba(255, 107, 53, 0.2);
+        }
+        
         .customer-name {
             font-weight: 600;
             color: #ff6b35;
@@ -491,7 +499,6 @@ if (!empty($orderIds)) {
                     <thead>
                     <tr>
                         <th class="col-id">No</th>
-                        <th class="col-id">ID</th>
                         <th>Pelanggan</th>
                         <th>Items</th>
                         <th class="col-center">Status & Total</th>
@@ -507,12 +514,9 @@ if (!empty($orderIds)) {
                     ?>
                         <tr>
                             <td class="col-id"><?= $i+1 ?></td>
-                            <td class="col-id"><strong>#<?= e($o['id_pesanan']) ?></strong></td>
                             <td>
                                 <div class="customer-info">
-                                    <div class="customer-avatar">
-                                        <?= strtoupper(substr($o['nama_pembeli'] ?: 'G', 0, 1)) ?>
-                                    </div>
+                                    <img src="images/user.webp" alt="User Icon" class="customer-avatar-img">
                                     <div class="customer-name"><?= e($o['nama_pembeli'] ?: 'Guest') ?></div>
                                 </div>
                             </td>

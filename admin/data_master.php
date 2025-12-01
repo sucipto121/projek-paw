@@ -6,38 +6,162 @@ if (!isset($_SESSION['user'])) {
 }
 require 'koneksi.php';
 
+// Periksa tipe kolom `foto` pada tabel `menu` agar tahu apakah BLOB disimpan dengan benar
+$foto_column_ok = true;
+$foto_column_note = '';
+try {
+  $q = $mysqli->query("SELECT DATA_TYPE, COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME='menu' AND COLUMN_NAME='foto' LIMIT 1");
+  if ($q) {
+    $col = $q->fetch_assoc();
+    if ($col) {
+      $dt = strtolower($col['DATA_TYPE'] ?? '');
+      if (!in_array($dt, ['blob','mediumblob','longblob'])) {
+        $foto_column_ok = false;
+        $foto_column_note = 'Kolom `menu.foto` bertipe ' . ($col['COLUMN_TYPE'] ?? $dt) . ", sebaiknya gunakan BLOB/MEDIUMBLOB/LONGBLOB agar gambar biner tersimpan dengan benar.";
+      }
+    } else {
+      $foto_column_ok = false;
+      $foto_column_note = 'Kolom `menu.foto` tidak ditemukan di database. Pastikan tabel `menu` memiliki kolom `foto` bertipe BLOB.';
+    }
+  }
+} catch (Throwable $e) {
+  // jangan hentikan eksekusi karena pemeriksaan ini tidak krusial
+  $foto_column_ok = false;
+  $foto_column_note = 'Tidak bisa memeriksa tipe kolom foto: ' . $e->getMessage();
+}
+
 // Pastikan variabel $user tersedia untuk header dan tampilan
 $user = $_SESSION['user'];
 
-// Handle create kategori
+// Handle create, delete kategori/menu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    if ($_POST['action'] === 'add_kategori') {
-        $nama = trim($_POST['nama_kategori'] ?? '');
-        $des = trim($_POST['deskripsi_kategori'] ?? '');
-        if ($nama !== '') {
-            $stmt = $mysqli->prepare('INSERT INTO kategori (nama_kategori, deskripsi) VALUES (?, ?)');
-            if ($stmt) { $stmt->bind_param('ss', $nama, $des); $stmt->execute(); }
-        }
-    }
-    if ($_POST['action'] === 'add_menu') {
-        $id_kat = (int)($_POST['id_kategori'] ?? 0);
-        $nama = trim($_POST['nama_menu'] ?? '');
-        $des = trim($_POST['deskripsi_menu'] ?? '');
-        $harga = floatval($_POST['harga'] ?? 0);
-        $stok = (int)($_POST['stok'] ?? 0);
-        $foto = null;
-        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-            $foto = file_get_contents($_FILES['foto']['tmp_name']);
-        }
-        $status = in_array($_POST['status'] ?? 'tersedia', ['tersedia','habis']) ? $_POST['status'] : 'tersedia';
-        if ($nama !== '') {
-            $stmt = $mysqli->prepare('INSERT INTO menu (id_kategori, nama_menu, deskripsi, harga, stok, foto, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
-            if ($stmt) { $stmt->bind_param('isssiss', $id_kat, $nama, $des, $harga, $stok, $foto, $status); $stmt->execute(); }
-        }
+  if ($_POST['action'] === 'add_kategori') {
+    $nama = trim($_POST['nama_kategori'] ?? '');
+    $des = trim($_POST['deskripsi_kategori'] ?? '');
+    if ($nama !== '') {
+      $stmt = $mysqli->prepare('INSERT INTO kategori (nama_kategori, deskripsi) VALUES (?, ?)');
+      if ($stmt) { $stmt->bind_param('ss', $nama, $des); $stmt->execute(); }
     }
     header('Location: data_master.php');
     exit;
+  }
+  if ($_POST['action'] === 'add_menu') {
+    $id_kat = (int)($_POST['id_kategori'] ?? 0);
+    $nama = trim($_POST['nama_menu'] ?? '');
+    $des = trim($_POST['deskripsi_menu'] ?? '');
+    $harga = floatval($_POST['harga'] ?? 0);
+    $stok = (int)($_POST['stok'] ?? 0);
+    $errors = [];
+    $foto = null;
+    // validate uploaded file
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+      $f = $_FILES['foto'];
+      if ($f['error'] !== UPLOAD_ERR_OK) {
+        $errors[] = 'Kesalahan saat mengunggah file (kode: ' . $f['error'] . ').';
+      } else {
+        // size limit 2MB
+        $maxSize = 2 * 1024 * 1024;
+        if ($f['size'] > $maxSize) $errors[] = 'Ukuran gambar terlalu besar. Maksimum 2 MB.';
+        // check image info
+        $imgInfo = @getimagesize($f['tmp_name']);
+        if ($imgInfo === false) {
+          $errors[] = 'File bukan gambar yang valid.';
+        } else {
+          $mime = $imgInfo['mime'] ?? '';
+          $allowed = ['image/jpeg','image/png','image/gif','image/webp'];
+          if (!in_array($mime, $allowed)) $errors[] = 'Tipe gambar tidak didukung. Gunakan JPG/PNG/GIF/WEBP.';
+          // optional dimension limits
+          $maxW = 3000; $maxH = 3000;
+          if (!empty($imgInfo[0]) && !empty($imgInfo[1]) && ($imgInfo[0] > $maxW || $imgInfo[1] > $maxH)) {
+            $errors[] = 'Dimensi gambar terlalu besar (maks ' . $maxW . 'x' . $maxH . ').';
+          }
+          if (empty($errors)) {
+            $foto = file_get_contents($f['tmp_name']);
+          }
+        }
+      }
+    }
+    $status = in_array($_POST['status'] ?? 'tersedia', ['tersedia','habis']) ? $_POST['status'] : 'tersedia';
+    if ($nama === '') $errors[] = 'Nama menu tidak boleh kosong.';
+    if (!empty($errors)) {
+      $_SESSION['flash_errors'] = $errors;
+      header('Location: data_master.php');
+      exit;
+    }
+    if ($nama !== '') {
+      $stmt = $mysqli->prepare('INSERT INTO menu (id_kategori, nama_menu, deskripsi, harga, stok, foto, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
+      if ($stmt) {
+        // Decide whether to store blob or filename based on DB column capability
+        $is_blob_storage = !empty($foto_column_ok);
+        $foto_param = '';
+        // If we validated an uploaded image earlier, either prepare blob or move file
+        if ($foto !== null) {
+          if ($is_blob_storage) {
+            $foto_param = $foto;
+          } else {
+            // store to filesystem under pengguna/images and save filename in DB
+            $uploadDir = realpath(__DIR__ . '/../pengguna') . DIRECTORY_SEPARATOR . 'images';
+            if ($uploadDir === false) $uploadDir = __DIR__ . '/../pengguna/images';
+            if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
+            $origName = isset($f['name']) ? $f['name'] : ('img_' . time());
+            $ext = pathinfo($origName, PATHINFO_EXTENSION);
+            $ext = $ext ? strtolower($ext) : 'jpg';
+            try { $rand = bin2hex(random_bytes(6)); } catch (Throwable $e) { $rand = substr(md5(uniqid('',true)),0,12); }
+            $filename = time() . '_' . $rand . '.' . $ext;
+            $target = $uploadDir . DIRECTORY_SEPARATOR . $filename;
+            if (isset($f['tmp_name']) && is_uploaded_file($f['tmp_name'])) {
+              if (@move_uploaded_file($f['tmp_name'], $target)) {
+                $foto_param = $filename;
+              } else {
+                // fallback: try file_put_contents from binary
+                if ($foto !== null) {
+                  @file_put_contents($target, $foto);
+                  if (file_exists($target)) $foto_param = $filename;
+                }
+              }
+            }
+          }
+        }
+
+        // bind types depending on storage
+        if ($is_blob_storage) {
+          $types = 'issdibs'; // id, nama, des, harga(double), stok, blob, status
+        } else {
+          $types = 'issdiss'; // id, nama, des, harga, stok, foto(filename string), status
+        }
+        $stmt->bind_param($types, $id_kat, $nama, $des, $harga, $stok, $foto_param, $status);
+        if ($is_blob_storage && $foto !== null) {
+          $stmt->send_long_data(5, $foto);
+        }
+        $ok = $stmt->execute();
+        if ($ok) {
+          $_SESSION['flash_success'] = 'Menu berhasil ditambahkan.';
+          header('Location: ../pengguna/index.php');
+          exit;
+        } else {
+          $_SESSION['flash_errors'] = ['Gagal menyimpan data: ' . $stmt->error];
+          header('Location: data_master.php');
+          exit;
+        }
+      }
+    }
+  }
+  if ($_POST['action'] === 'delete_kategori' && isset($_POST['id_kategori'])) {
+    $id = (int)$_POST['id_kategori'];
+    // Hapus semua menu yang terkait kategori ini terlebih dahulu (opsional, tergantung foreign key)
+    $mysqli->query("DELETE FROM menu WHERE id_kategori = $id");
+    $mysqli->query("DELETE FROM kategori WHERE id_kategori = $id");
+    header('Location: data_master.php');
+    exit;
+  }
+  if ($_POST['action'] === 'delete_menu' && isset($_POST['id_menu'])) {
+    $id = (int)$_POST['id_menu'];
+    $mysqli->query("DELETE FROM menu WHERE id_menu = $id");
+    header('Location: data_master.php');
+    exit;
+  }
 }
+
 
 $kats = [];
 $menus = [];
@@ -339,6 +463,27 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
       </div>
     </aside>
     <main class="main">
+      <?php if (!empty($_SESSION['flash_errors']) || !empty($_SESSION['flash_success'])): ?>
+        <div style="margin-bottom:16px;">
+          <?php if (!empty($_SESSION['flash_errors'])): ?>
+            <div style="background:#ffe6e6;border:1px solid #ffb3b3;padding:12px;border-radius:8px;color:#8a1f1f;margin-bottom:8px;">
+              <strong>Terjadi kesalahan:</strong>
+              <ul style="margin-top:8px;padding-left:18px;">
+                <?php foreach($_SESSION['flash_errors'] as $err): ?>
+                  <li><?= htmlspecialchars($err) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+            <?php unset($_SESSION['flash_errors']); ?>
+          <?php endif; ?>
+          <?php if (!empty($_SESSION['flash_success'])): ?>
+            <div style="background:#e6ffea;border:1px solid #b7f0c9;padding:12px;border-radius:8px;color:#116622;">
+              <?= htmlspecialchars($_SESSION['flash_success']) ?>
+            </div>
+            <?php unset($_SESSION['flash_success']); ?>
+          <?php endif; ?>
+        </div>
+      <?php endif; ?>
       <div class="card">
         <h3>📦 Tambah Kategori</h3>
         <form method="POST">
@@ -395,7 +540,10 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
           <div class="form-section">
             <div>
               <label>Upload Foto</label>
-              <input type="file" name="foto" accept="image/*">
+              <input id="foto" type="file" name="foto" accept="image/*">
+              <div style="margin-top:8px">
+                <img id="foto_preview" alt="Preview gambar" style="max-width:220px; max-height:160px; border-radius:8px; display:none; object-fit:cover; box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+              </div>
             </div>
             <div>
               <label>Status</label>
@@ -419,6 +567,7 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
                 <th>ID</th>
                 <th>Nama Kategori</th>
                 <th>Deskripsi</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -430,6 +579,13 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
                     <td><strong>#<?= $c['id_kategori'] ?></strong></td>
                     <td><strong><?= e($c['nama_kategori']) ?></strong></td>
                     <td><?= e($c['deskripsi']) ?: '-' ?></td>
+                    <td>
+                      <form method="POST" onsubmit="return confirm('Hapus kategori ini? Semua menu di kategori ini juga akan dihapus!');" style="display:inline">
+                        <input type="hidden" name="action" value="delete_kategori">
+                        <input type="hidden" name="id_kategori" value="<?= $c['id_kategori'] ?>">
+                        <button type="submit" class="btn danger" style="padding:4px 10px;font-size:13px">Hapus</button>
+                      </form>
+                    </td>
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -450,6 +606,7 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
                 <th>Harga</th>
                 <th>Stok</th>
                 <th>Status</th>
+                <th>Aksi</th>
               </tr>
             </thead>
             <tbody>
@@ -468,6 +625,13 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
                         <?= ucfirst(e($m['status'])) ?>
                       </span>
                     </td>
+                    <td>
+                      <form method="POST" onsubmit="return confirm('Hapus menu ini?');" style="display:inline">
+                        <input type="hidden" name="action" value="delete_menu">
+                        <input type="hidden" name="id_menu" value="<?= $m['id_menu'] ?>">
+                        <button type="submit" class="btn danger" style="padding:4px 10px;font-size:13px">Hapus</button>
+                      </form>
+                    </td>
                   </tr>
                 <?php endforeach; ?>
               <?php endif; ?>
@@ -478,4 +642,30 @@ function e($s){ return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
     </main>
   </div>
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const input = document.getElementById('foto');
+  const img = document.getElementById('foto_preview');
+  if (!input || !img) return;
+  input.addEventListener('change', function(){
+    const file = input.files && input.files[0];
+    if (!file) {
+      img.style.display = 'none';
+      img.src = '';
+      return;
+    }
+    if (!file.type.startsWith('image/')) {
+      img.style.display = 'none';
+      img.src = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      img.src = ev.target.result;
+      img.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+});
+</script>
 </html>

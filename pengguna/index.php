@@ -15,7 +15,26 @@ if ($stmt) {
   while ($row = $res->fetch_assoc()) {
     $img = '';
     if (!empty($row['foto'])) {
-      $img = (strpos($row['foto'], '/') !== false) ? $row['foto'] : ('images/' . $row['foto']);
+      $fotoVal = $row['foto'];
+      $isPathLike = is_string($fotoVal) && (strpos($fotoVal, '/') !== false || preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $fotoVal));
+      if ($isPathLike) {
+        $img = (strpos($fotoVal, '/') !== false) ? $fotoVal : ('images/' . $fotoVal);
+      } else {
+        $mime = 'image/jpeg';
+        if (function_exists('getimagesizefromstring')) {
+          $info = @getimagesizefromstring($fotoVal);
+          if (!empty($info['mime'])) $mime = $info['mime'];
+        }
+        if (function_exists('finfo_buffer')) {
+          $f = @finfo_open(FILEINFO_MIME_TYPE);
+          if ($f) {
+            $det = @finfo_buffer($f, $fotoVal);
+            if ($det) $mime = $det;
+            @finfo_close($f);
+          }
+        }
+        $img = 'data:' . $mime . ';base64,' . base64_encode($fotoVal);
+      }
     } else {
       $img = 'images/default-food.jpg';
     }
@@ -45,7 +64,26 @@ if (empty($products)) {
     while ($row = $res2->fetch_assoc()) {
       $img = '';
       if (!empty($row['foto'])) {
-        $img = (strpos($row['foto'], '/') !== false) ? $row['foto'] : ('images/' . $row['foto']);
+        $fotoVal = $row['foto'];
+        $isPathLike = is_string($fotoVal) && (strpos($fotoVal, '/') !== false || preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $fotoVal));
+        if ($isPathLike) {
+          $img = (strpos($fotoVal, '/') !== false) ? $fotoVal : ('images/' . $fotoVal);
+        } else {
+          $mime = 'image/jpeg';
+          if (function_exists('getimagesizefromstring')) {
+            $info = @getimagesizefromstring($fotoVal);
+            if (!empty($info['mime'])) $mime = $info['mime'];
+          }
+          if (function_exists('finfo_buffer')) {
+            $f = @finfo_open(FILEINFO_MIME_TYPE);
+            if ($f) {
+              $det = @finfo_buffer($f, $fotoVal);
+              if ($det) $mime = $det;
+              @finfo_close($f);
+            }
+          }
+          $img = 'data:' . $mime . ';base64,' . base64_encode($fotoVal);
+        }
       } else {
         $img = 'images/default-food.jpg';
       }
@@ -89,12 +127,41 @@ usort($products, function($a, $b){
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* Style untuk logo di header */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .brand-logo img {
+      height: 50px;
+      width: 50px;
+      object-fit: contain;
+      border-radius: 20px;
+    }
+    
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <div class="logo" >Rasa Laut Nusantara</div>
+        <div class="brand-logo">
+          <img src="images/logo.jpg" alt="Rasa Laut Nusantara Logo">
+          <div class="logo">Rasa Laut Nusantara</div>
+        </div>
         <nav class="main-nav">
           <a href="#" id="home">Beranda</a>
           <a href="#" id="ourMenu">Menu Kami</a>
