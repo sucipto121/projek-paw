@@ -158,10 +158,15 @@ usort($products, function($a, $b){
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
+<<<<<<< HEAD
         <div class="brand-logo">
           <img src="images/logo.jpg" alt="Rasa Laut Nusantara Logo">
           <div class="logo">Rasa Laut Nusantara</div>
         </div>
+=======
+        <img src="images/logo.png">
+        <div class="logo" >Rasa Laut Nusantara</div>
+>>>>>>> bcb20222c5ecc8e3de2ed33f6763055bb4151145
         <nav class="main-nav">
           <a href="#" id="home">Beranda</a>
           <a href="#" id="ourMenu">Menu Kami</a>
@@ -181,13 +186,7 @@ usort($products, function($a, $b){
     <div class="hero-left">
       <p class="kicker" style="font-size: 20px; font-family:playfair Display" >Pesan Seafood Segar Anda</p>
       <h1 style="font-family: playfair Display;">Kesegaran Laut Indonesia, Tersaji untuk Anda.</h1>
-      <p class="lead">Kami menyajikan aneka hidangan laut terbaik dari berbagai penjuru Nusantara, dimasak dengan bumbu khas dan kesegaran yang terjaga.</p>
-      <ul class="stats" style="margin-top: 65px;">
-        <li><strong>06</strong><span>Tahun Berpengalaman</span></li>
-        <li><strong>10</strong><span>Penghargaan Kuliner</span></li>
-        <li><strong>20</strong><span>Cabang di Indonesia</span></li>
-        <li><strong>1000+</strong><span>Pelanggan Setiap Bulan</span></li>
-      </ul>
+      <p class="lead">Kami menyajikan aneka hidangan laut terbaik dari berbagai penjuru Nusantara, dimasak dengan bumbu khas dan kesegaran yang terjaga. Setiap sajian diracik dengan penuh ketelitian, menghadirkan cita rasa autentik yang memanjakan setiap suapan dan perpaduan sempurna antara aroma laut segar dan rempah Nusantara yang membuat setiap hidangan begitu menggoda.</p>
     </div>
     <div class="hero-right">
       <div class="pizza-wrap">
@@ -313,8 +312,8 @@ usort($products, function($a, $b){
       <div class="contact-item">
         <h3 style="font-family: fairplay display;">Kontak Kami</h3>
         <p>Jl. Rasa Laut No. 27, Nusantara</p>
-        <p><strong>Tel:</strong> +62 812-3456-7890</p>
-        <p><strong>Email:</strong> support@rasalaut.com</p>
+        <p><strong>Telepon:</strong> +62 877-2402-5788</p>
+        <p><strong>Email:</strong> private.media165@gmail.com</p>
       </div>
 
       <div class="contact-item">
