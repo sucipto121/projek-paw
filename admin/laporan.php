@@ -8,7 +8,6 @@ if (!isset($_SESSION['user'])) {
 require 'koneksi.php';
 $user = $_SESSION['user'];
 
-// parse date filter
 $start = isset($_GET['start']) ? trim($_GET['start']) : '';
 $end = isset($_GET['end']) ? trim($_GET['end']) : '';
 
@@ -21,7 +20,6 @@ $sTs = parseDate($start);
 $eTs = parseDate($end);
 if ($sTs && !$eTs) { $eTs = time(); }
 
-// build SQL date filters
 $where = [];
 $params = [];
 $types = '';
@@ -52,7 +50,6 @@ if ($stmt) {
   $stmt->close();
 }
 
-// fetch detail items for listed orders
 $orderDetails = [];
 if (!empty($orders)) {
   $ids = array_map(function($r){ return (int)$r['id_pesanan']; }, $orders);
@@ -83,7 +80,6 @@ if (!empty($orders)) {
   }
 }
 
-// compute summary from DB data
 $totalOrders = 0;
 $totalRevenue = 0.0;
 $itemsCount = [];
@@ -112,10 +108,8 @@ foreach ($orders as $o) {
   $perDay[$day]['pendapatan'] += (float)$o['total_harga'];
 }
 
-// Sort items by count
 arsort($itemsCount);
 
-// UPSERT per-hari ke tabel laporan_harian
 foreach ($perDay as $day => $agg) {
   $check = $mysqli->prepare("SELECT id_laporan FROM laporan_harian WHERE DATE(tanggal) = ?");
   if ($check) {
@@ -148,7 +142,6 @@ foreach ($perDay as $day => $agg) {
   }
 }
 
-// export CSV if requested
 if (isset($_GET['export']) && $_GET['export'] === 'csv') {
   $fname = 'laporan_' . date('Ymd_His') . '.csv';
   header('Content-Type: text/csv');
@@ -165,7 +158,9 @@ if (isset($_GET['export']) && $_GET['export'] === 'csv') {
     }
     $time = $o['tanggal_pesanan'];
     $pembeli = $o['pembeli_nama'] ?? '';
-    fputcsv($out, [$i++, $o['kode_pesanan'] ?? '', $pembeli, implode('; ', $items), $o['status_pesanan'] ?? '', $time, $sum]);
+    $itemsStr = implode("\n", $items);
+    $sumFormatted = number_format($sum, 2, ',', '.');
+    fputcsv($out, [$i++, $o['kode_pesanan'] ?? '', $pembeli, $itemsStr, $o['status_pesanan'] ?? '', $time, $sumFormatted]);
   }
   fclose($out);
   exit;

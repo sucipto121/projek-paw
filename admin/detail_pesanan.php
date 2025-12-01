@@ -15,7 +15,6 @@ if ($id_pesanan <= 0) {
     die("ID Pesanan tidak valid.");
 }
 
-// Ambil data pesanan
 $q = "
     SELECT p.*, b.nama AS nama_pembeli
     FROM pesanan p
@@ -34,7 +33,6 @@ if (!$order) {
     die("Pesanan tidak ditemukan.");
 }
 
-// Ambil detail pesanan
 $q_detail = "
     SELECT d.*, m.nama_menu, m.foto
     FROM detail_pesanan d

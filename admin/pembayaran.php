@@ -17,7 +17,6 @@ if ($id_pesanan <= 0) {
     die("ID Pesanan tidak valid.");
 }
 
-// Ambil data pesanan
 $stmt = $mysqli->prepare("SELECT * FROM pesanan WHERE id_pesanan = ?");
 $stmt->bind_param('i', $id_pesanan);
 $stmt->execute();
@@ -28,12 +27,11 @@ if (!$order) {
 }
 
 if ($order['status_pesanan'] === 'selesai') {
-    // Jika sudah selesai, redirect ke detail
+
     header("Location: detail_pesanan.php?id=$id_pesanan");
     exit;
 }
 
-// Handle Post Pembayaran
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $bayar = isset($_POST['bayar']) ? (float)$_POST['bayar'] : 0;
     $metode = isset($_POST['metode']) ? $_POST['metode'] : 'tunai';
@@ -44,9 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $kembalian = $bayar - $total;
         
-        // 1. Simpan ke tabel pembayaran
-        // Cek apakah tabel pembayaran ada (berdasarkan request user baru dibuat)
-        // Kita asumsikan tabel 'pembayaran' sudah ada sesuai request user.
         
         $mysqli->begin_transaction();
         
