@@ -1,5 +1,4 @@
 <?php
-// checkout_success.php
 $order_code = $_GET['code'] ?? '';
 if (!$order_code) die("Kode pesanan tidak ditemukan.");
 

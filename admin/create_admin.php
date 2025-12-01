@@ -1,5 +1,4 @@
 <?php
-// One-time admin creation script. Remove after use.
 require 'koneksi.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama = trim($_POST['nama'] ?? '');

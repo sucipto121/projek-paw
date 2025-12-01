@@ -6,7 +6,6 @@ if (!isset($_SESSION['user'])) {
 }
 require 'koneksi.php';
 
-// Periksa tipe kolom `foto` pada tabel `menu` agar tahu apakah BLOB disimpan dengan benar
 $foto_column_ok = true;
 $foto_column_note = '';
 try {
@@ -25,15 +24,12 @@ try {
     }
   }
 } catch (Throwable $e) {
-  // jangan hentikan eksekusi karena pemeriksaan ini tidak krusial
   $foto_column_ok = false;
   $foto_column_note = 'Tidak bisa memeriksa tipe kolom foto: ' . $e->getMessage();
 }
 
-// Pastikan variabel $user tersedia untuk header dan tampilan
 $user = $_SESSION['user'];
 
-// Handle create, delete kategori/menu
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
   if ($_POST['action'] === 'add_kategori') {
     $nama = trim($_POST['nama_kategori'] ?? '');
@@ -53,16 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $stok = (int)($_POST['stok'] ?? 0);
     $errors = [];
     $foto = null;
-    // validate uploaded file
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
       $f = $_FILES['foto'];
       if ($f['error'] !== UPLOAD_ERR_OK) {
         $errors[] = 'Kesalahan saat mengunggah file (kode: ' . $f['error'] . ').';
       } else {
-        // size limit 2MB
         $maxSize = 2 * 1024 * 1024;
         if ($f['size'] > $maxSize) $errors[] = 'Ukuran gambar terlalu besar. Maksimum 2 MB.';
-        // check image info
         $imgInfo = @getimagesize($f['tmp_name']);
         if ($imgInfo === false) {
           $errors[] = 'File bukan gambar yang valid.';
@@ -70,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
           $mime = $imgInfo['mime'] ?? '';
           $allowed = ['image/jpeg','image/png','image/gif','image/webp'];
           if (!in_array($mime, $allowed)) $errors[] = 'Tipe gambar tidak didukung. Gunakan JPG/PNG/GIF/WEBP.';
-          // optional dimension limits
           $maxW = 3000; $maxH = 3000;
           if (!empty($imgInfo[0]) && !empty($imgInfo[1]) && ($imgInfo[0] > $maxW || $imgInfo[1] > $maxH)) {
             $errors[] = 'Dimensi gambar terlalu besar (maks ' . $maxW . 'x' . $maxH . ').';
@@ -91,15 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($nama !== '') {
       $stmt = $mysqli->prepare('INSERT INTO menu (id_kategori, nama_menu, deskripsi, harga, stok, foto, status) VALUES (?, ?, ?, ?, ?, ?, ?)');
       if ($stmt) {
-        // Decide whether to store blob or filename based on DB column capability
         $is_blob_storage = !empty($foto_column_ok);
         $foto_param = '';
-        // If we validated an uploaded image earlier, either prepare blob or move file
         if ($foto !== null) {
           if ($is_blob_storage) {
             $foto_param = $foto;
           } else {
-            // store to filesystem under pengguna/images and save filename in DB
             $uploadDir = realpath(__DIR__ . '/../pengguna') . DIRECTORY_SEPARATOR . 'images';
             if ($uploadDir === false) $uploadDir = __DIR__ . '/../pengguna/images';
             if (!is_dir($uploadDir)) @mkdir($uploadDir, 0755, true);
@@ -113,7 +102,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
               if (@move_uploaded_file($f['tmp_name'], $target)) {
                 $foto_param = $filename;
               } else {
-                // fallback: try file_put_contents from binary
                 if ($foto !== null) {
                   @file_put_contents($target, $foto);
                   if (file_exists($target)) $foto_param = $filename;
@@ -123,11 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
           }
         }
 
-        // bind types depending on storage
         if ($is_blob_storage) {
-          $types = 'issdibs'; // id, nama, des, harga(double), stok, blob, status
+          $types = 'issdibs'; 
         } else {
-          $types = 'issdiss'; // id, nama, des, harga, stok, foto(filename string), status
+          $types = 'issdiss'; 
         }
         $stmt->bind_param($types, $id_kat, $nama, $des, $harga, $stok, $foto_param, $status);
         if ($is_blob_storage && $foto !== null) {
@@ -148,7 +135,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
   }
   if ($_POST['action'] === 'delete_kategori' && isset($_POST['id_kategori'])) {
     $id = (int)$_POST['id_kategori'];
-    // Hapus semua menu yang terkait kategori ini terlebih dahulu (opsional, tergantung foreign key)
     $mysqli->query("DELETE FROM menu WHERE id_kategori = $id");
     $mysqli->query("DELETE FROM kategori WHERE id_kategori = $id");
     header('Location: data_master.php');

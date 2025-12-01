@@ -1,7 +1,4 @@
 <?php
-// assign_categories.php
-// Create kategori entries and assign menu.id_kategori based on keywords in nama_menu/deskripsi
-
 require 'koneksi.php';
 
 $created = [];
@@ -23,7 +20,6 @@ foreach (array_keys($mapping) as $catName) {
     }
 }
 
-// fetch all menu rows
 $menus = [];
 $res = $mysqli->query('SELECT id_menu, nama_menu, deskripsi FROM menu');
 if ($res) {
@@ -53,7 +49,6 @@ foreach ($menus as $m) {
         $skipped++;
     }
 
-    // update menu.id_kategori if different
     $u = $mysqli->prepare('UPDATE menu SET id_kategori = ? WHERE id_menu = ?');
     $u->bind_param('ii', $assigned, $m['id_menu']);
     if ($u->execute()) {
@@ -62,7 +57,6 @@ foreach ($menus as $m) {
     }
 }
 
-// Output summary
 ?><!doctype html>
 <html>
 <head>

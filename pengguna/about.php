@@ -5,24 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang Kami — Rasa Laut Nusantara</title>
     <style>
-<<<<<<< HEAD
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600;700&display=swap');
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-=======
-        /* keep global fonts/defaults unchanged; only adjust spacing/layout */
-        .about-section{
-            max-width:900px;
-            margin:60px auto;
-            background:#fff; /* preserve original white card */
-            padding:30px;
-            border-radius:12px;
-            box-shadow:0 8px 28px rgba(0,0,0,.08);
-            border:1px solid rgba(0,0,0,0.03);
->>>>>>> bcb20222c5ecc8e3de2ed33f6763055bb4151145
         }
 
         body {
@@ -420,11 +408,7 @@
 <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-<<<<<<< HEAD
         <img src="images/logo.jpg" alt="Rasa Laut Nusantara Logo">
-=======
-        <img src="images/logo.png">
->>>>>>> bcb20222c5ecc8e3de2ed33f6763055bb4151145
         <div class="logo">Rasa Laut Nusantara</div>
       </div>
       <nav class="main-nav">
@@ -497,8 +481,8 @@
       <div class="contact-item">
         <h3>Kontak Kami</h3>
         <p>Jl. Rasa Laut No. 27, Nusantara</p>
-        <p><strong>Telepon:</strong> +62 877-2402-5788</p>
-        <p><strong>Email:</strong> private.media165@gmail.com</p>
+        <p><strong>Tel:</strong> +62 812-3456-7890</p>
+        <p><strong>Email:</strong> support@rasalaut.com</p>
       </div>
 
       <div class="contact-item">

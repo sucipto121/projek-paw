@@ -1,16 +1,13 @@
 <?php
 session_start();
 
-// If user already logged in and not forcing the login form, show a friendly notice
 $already = isset($_SESSION['user']);
 $force = (isset($_GET['force']) && $_GET['force'] === '1');
 
-// Function to escape output
 function e($s) {
     return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 }
 
-// Only create CSRF token when the login form will be shown
 if (!($already && !$force)) {
     if (empty($_SESSION['csrf_token']) || empty($_SESSION['csrf_token_time'])) {
         try {
