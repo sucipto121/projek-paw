@@ -1,14 +1,17 @@
 <?php
 session_start();
 
+// Deteksi apakah user sudah login
 $already = isset($_SESSION['user']);
-$force = (isset($_GET['force']) && $_GET['force'] === '1');
+$force   = (isset($_GET['force']) && $_GET['force'] === '1');
 
+// Fungsi aman untuk htmlspecialchars
 function e($s) {
     return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 }
 
-if (!($already && !$force)) {
+// Buat CSRF token jika belum ada, atau dipaksa reset
+if (!$already || $force) {
     if (empty($_SESSION['csrf_token']) || empty($_SESSION['csrf_token_time'])) {
         try {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -19,6 +22,7 @@ if (!($already && !$force)) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

@@ -125,6 +125,26 @@ usort($products, function($a, $b){
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+.stats{
+  display:flex;
+  gap:16px;
+  list-style:none;
+  padding:0;
+  margin:0
+}
+.stats li{
+  background:var(--card);
+  padding:10px 14px;
+  border-radius:12px;
+  box-shadow:var(--soft-shadow);
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start
+}
+.stats li strong{
+  font-size:18px;
+  color:#333
+}
     .brand {
       display: flex;
       align-items: center;
